@@ -192,6 +192,39 @@
         #bidInput::placeholder {
             text-align: center;
         }
+
+        
+        @media screen and (max-aspect-ratio: 1/1) {
+            .content {
+                display: none;
+            }
+
+            .bids-container {
+                width: 70%;
+                position: fixed;
+                left: 15%;
+                font-size: 2vh;
+            }
+
+            .bid-container {
+                width: 70%;
+                position: fixed;
+                left: 15%;
+            }
+
+            #connectButton{
+                font-size: 2vh;
+            }
+
+            .custom-button {
+                display: none;
+            }
+
+            .topBids {
+                width: 70%;
+                font-size: 1vh;
+            }
+        }
     </style>
 </head>
 <body>
@@ -212,7 +245,7 @@
         <button id="placeBidButton" class="place-bid-button">Place Bid</button>    </div>
 
     <div class="bids-container">
-        <h2>Top 5 Bids</h2>
+        <h2 id ="topBids" class="topBids">Top 5 Bids</h2>
         <ul id="bids-list">
             <!-- Bids will be populated here -->
         </ul>
