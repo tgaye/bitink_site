@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crypto Social Game</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/web3@1.3.0/dist/web3.min.js"></script>
+    <style>
+        body {
+            background-image: url("background1.jpg");
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            font-family: 'Permanent Marker', cursive;
+        }
+        .btn-primary {
+            background-color: #D75996;
+            border-color: #ff4081;
+            text-shadow: -2px 0 black, 0 1px black, 1px 0 black, 0 -2px black;
+            position: absolute;
+            height: 7vh;
+            font-size: 2rem;
+            width: 30%;
+            left: 57%;
+        }
+
+        .button-active {
+            background-color: #80D1F5 !important;
+            color: white !important;
+        }
+
+        .connect-button {
+            position: absolute;
+            left: 80%; /* Adjust this value to move the button left or right */
+        }
+
+        .header h1 {
+            text-align: center;
+            position: absolute;
+            left: 8%;
+            font-size: 3rem;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1%;
+            height: 10vh; /* Add this line to set a specific height */
+            border-bottom: 2px solid #f5f5dc;
+            background-color: rgb(2, 5, 18);
+            color: #D75996;
+            text-shadow: -2px 0 rgb(255, 255, 255), 0 1px rgb(255, 255, 255), 1px 0 rgb(255, 255, 255), 0 -2px rgb(255, 255, 255);
+        }
+
+        
+        .content {
+            padding: 2%;
+            font-size: 1.2em;
+            width: 35%; /* Add this line to set the width to 50% */
+            float: left; /* Add this line to float the container to the left */
+        }
+
+        .content p {
+            word-wrap: break-word;
+        }
+
+        .content h1 {
+            text-shadow: -2px 0 rgb(255, 255, 255), 0 1px rgb(255, 255, 255), 1px 0 rgb(255, 255, 255), 0 -2px rgb(255, 255, 255); 
+        }
+
+        .custom-button {
+            position: absolute;
+            left: 6%;
+            top: 60%;
+            transform: translateY(-50%);
+            font-family: 'Permanent Marker', cursive;
+            border: 2px solid black;
+            background-color: #D75996;
+            color: white;
+            text-shadow: -2px 0 black, 0 1px black, 1px 0 black, 0 -2px black;
+            font-weight: bold;
+            padding: 10px 20px;
+            font-size: 1.2em;
+            width: 20%;
+        }
+
+        .custom-button2 {
+            position: absolute;
+            left: 57%;
+            top: 65%;
+            transform: translateY(-50%);
+            font-family: 'Permanent Marker', cursive;
+            border: 2px solid black;
+            background-color: #2a6d2c;
+            color: white;
+            text-shadow: -3px 0 black, 0 3px black, 3px 0 black, 0 -3px black;
+            font-weight: bold;
+            padding: 10px 20px;
+            font-size: 3rem;
+            width: 30%;
+            height: 18%;
+            border-radius: 10px;
+        }
+
+        .bid-container {
+            background-color: #4C6065;
+            border: 2px solid black;
+            padding: 15px;
+            width: 24%;
+            position: absolute;
+            left: 60%;
+            top: 16%;
+            text-align: center;
+            border-radius: 10px;
+            font-family: 'Permanent Marker', cursive;
+        }
+
+        .bid-container h2 {
+            color: #ffffff;
+            text-shadow: -3px 0 black, 0 3px black, 3px 0 black, 0 -3px black;
+        }
+        .bid-container p {
+            color: #D7212A;
+            font-size: 3rem;
+            text-shadow: -3px 0 black, 0 3px black, 3px 0 black, 0 -3px black;
+        }
+
+        .header button {
+            margin: 5px;
+        }
+
+        .custom-button:hover {
+            transform: translateY(-50%) scale(1.15);
+        }
+
+        .custom-button2:hover {
+            transform: translateY(-50%) scale(1.15);
+        }
+
+        /* Add this new style */
+        button:hover {
+            transform: scale(1.15);
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .connected {
+            background-color: #177CCB !important;
+            color: white !important;
+            border-color: #ffffff;
+        }
+
+        .bids-container {
+            background-color: #636262;
+            border: 2px solid black;
+            padding: 15px;
+            border-radius: 10px;
+            font-family: 'Permanent Marker', cursive;
+            color: rgb(75, 171, 45);
+            position: absolute;
+            width: 30%;
+            height: auto;
+            left: 57%;
+            top: 55%;
+            text-align: center; /* Add this line */
+            font-size: 1.5rem;
+            text-shadow: -2px 0 black, 0 1px black, 1px 0 black, 0 -2px black;
+        }
+
+        .bids-container h2 {
+            color: #ffffff;
+            text-shadow: -3px 0 black, 0 3px black, 3px 0 black, 0 -3px black;
+            font-size: 3rem;
+        }
+
+        .place-bid-button {
+            margin-top: 5%; 
+        }
+
+        .button-selected {
+            background-color: #177CCB !important;
+            color: white !important;
+            border-color: #ffffff;
+        }
+
+        #bidInput {
+            text-align: center;
+        }
+
+        #bidInput::placeholder {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <h1>BitInk</h1>
+        <button id="connectButton" class="btn btn-primary">Connect Wallet</button>
+        <button class="custom-button" onclick="button1Pressed()">FAQ</button>
+        <button class="custom-button" style="top: 70%;" onclick="button2Pressed()">Portfolio</button>
+        <button class="custom-button" style="top: 80%;" onclick="button3Pressed()">NFTs</button>
+        <button class="custom-button"  style="display: none; top: 90%;" onclick="deleteBid(userAddress)">Delete Bid</button>
+        <button class="custom-button2" style="display:none" ="button3Pressed()">Bid On Tattoo</button>
+
+    </header>
+    <div class="bid-container">
+        <h2>Current Highest Bid</h2>
+        <p>1.24 ETH</p>
+        <input type="number" id="bidInput" placeholder="Enter your bid">
+        <button id="placeBidButton" class="place-bid-button">Place Bid</button>    </div>
+
+    <div class="bids-container">
+        <h2>Top 5 Bids</h2>
+        <ul id="bids-list">
+            <!-- Bids will be populated here -->
+        </ul>
+    </div>
+    <div class="content">
+        <h1>The Social Crypto Art Experiment..</h1>
+        <p> Experience the fusion of creativity and commerce as social attention is commodified through mesmerizing tattoos. Join us on this enigmatic journey where the boundaries of art and technology are redefined.</p>
+    </div>
+    <script>
+
+        const WETH_CONTRACT_ADDRESS = '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2';
+        const WETH_ABI = [{"constant":true,"inputs":[{"name":"_owner","type":"address"}],"name":"balanceOf","outputs":[{"name":"balance","type":"uint256"}],"type":"function"}];
+
+
+        let userAddress;
+        document.getElementById('connectButton').addEventListener('click', async () => {
+            updateHighestBid();
+            updateBidsList();
+            if (window.ethereum) {
+                window.web3 = new Web3(ethereum);
+                try {
+                    await ethereum.enable();
+                    var accounts = await web3.eth.getAccounts();
+                    userAddress = accounts[0];
+                    document.getElementById('connectButton').innerText = accounts[0].substring(0, 7);
+                    document.getElementById('connectButton').classList.add('connected'); // Add this line
+                } catch (error) {
+                    console.error(error);
+                }
+            } else if (window.web3) {
+                window.web3 = new Web3(web3.currentProvider);
+            } else {
+                console.log('Non-Ethereum browser detected. You should consider trying MetaMask!');
+            }
+        });
+        var defaultContent = `
+        <h1>The Social Crypto Art Experiment..</h1>
+        <p> Experience the fusion of creativity and commerce as social attention is commodified through mesmerizing tattoos. Join us on this enigmatic journey where the boundaries of art and technology are redefined.</p>
+        `;
+
+        var faqContent = `
+            <h1>FAQ</h1>
+            <p>- 24 hours to submit art after winning bid.</p>
+            <p>- Bid timer extends for 15 minutes every new bid.</p>
+            <p>- Willing participant is tatted with winner's choice of art for 80% of the bid amount.</p>
+            <p>- NFT is created after tattoo is finished photographing the process and is uploaded to the blockchain.</p>
+            `;
+
+        var portfolioContent = `
+        <h1>Portfolio</h1>
+        <p>Here is the portfolio content...</p>
+         `;
+
+        var nftsContent = `
+        <h1>NFTs</h1>
+        <p>Here is the NFTs content...</p>
+        `;
+
+        var isFAQ = false;
+        var isPortfolio = false;
+        var isNFTs = false;
+
+        document.getElementById('placeBidButton').addEventListener('click', async () => {
+            const bid = document.getElementById('bidInput').value;
+            const address = userAddress;
+
+            // Create a new contract instance
+            const wethContract = new web3.eth.Contract(WETH_ABI, WETH_CONTRACT_ADDRESS);
+
+            // Get the user's WETH balance
+            const balance = await wethContract.methods.balanceOf(address).call();
+            const balanceInEth = web3.utils.fromWei(balance, 'ether');
+
+            // Check if the user's balance is greater than or equal to the bid amount
+            if (parseFloat(balanceInEth) < parseFloat(bid)) {
+                alert('Insufficient WETH balance');
+                return;
+            }
+
+            // Place the bid if the balance is sufficient
+            const response = await fetch('http://localhost:3000/bid', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ address, bid }),
+            });
+
+            if (response.ok) {
+                const data = await response.text();
+                alert(data);
+                document.querySelector('.bid-container p').innerText = bid + ' ETH';
+                updateBidsList();
+            } else {
+                alert('Error: ' + await response.text());
+            }
+        });
+
+        function updateBidsList() {
+            fetch('http://localhost:3000/getBids')
+                .then(response => response.json())
+                .then(async data => {
+                    // Sort the bids in descending order and take the top 5
+                    const topBids = data.sort((a, b) => b.bid - a.bid).slice(0, 5);
+
+                    // Get the bids list element
+                    const bidsList = document.getElementById('bids-list');
+
+                    // Clear the current list
+                    bidsList.innerHTML = '';
+
+                    // Add the top bids to the list
+                    for (const bid of topBids) {
+                        // Create a new contract instance
+                        const wethContract = new web3.eth.Contract(WETH_ABI, WETH_CONTRACT_ADDRESS);
+
+                        // Get the user's WETH balance
+                        const balance = await wethContract.methods.balanceOf(bid.address).call();
+                        const balanceInEth = web3.utils.fromWei(balance, 'ether');
+
+                        // Check if the user's balance is greater than or equal to the bid amount
+                        if (parseFloat(balanceInEth) >= parseFloat(bid.bid)) {
+                            const listItem = document.createElement('li');
+                            listItem.innerText = `${bid.bid} ETH by ${bid.address.substring(0, 7)}`; // Full address is used here
+                            bidsList.appendChild(listItem);
+                        } else {
+                            deleteBid(bid.address);
+                        }
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+        function updateHighestBid() {
+        fetch('http://localhost:3000/highestBid')
+            .then(response => response.json())
+            .then(data => {
+                document.querySelector('.bid-container p').innerText = data.highestBid + ' ETH';
+            })
+            .catch(error => console.error('Error:', error));
+        }
+
+        window.onload = function() {
+            updateHighestBid();
+            updateBidsList();
+        };
+        setInterval(updateHighestBid, 10000);
+        setInterval(updateBidsList, 10000);
+
+        document.querySelector('.header h1').addEventListener('click', button1Pressed);
+        function button1Pressed() {
+            var contentDiv = document.querySelector('.content');
+            var faqButton = document.querySelector('.custom-button');
+            if (isFAQ) {
+                contentDiv.innerHTML = defaultContent;
+                faqButton.classList.remove('button-selected');
+                isFAQ = false;
+            } else {
+                contentDiv.innerHTML = faqContent;
+                faqButton.classList.add('button-selected');
+                isFAQ = true;
+            }
+        }
+
+        function button2Pressed() {
+            var contentDiv = document.querySelector('.content');
+            var portfolioButton = document.querySelector('.custom-button[style="top: 70%;"]');
+            if (isPortfolio) {
+                contentDiv.innerHTML = defaultContent;
+                portfolioButton.classList.remove('button-selected');
+                isPortfolio = false;
+            } else {
+                contentDiv.innerHTML = portfolioContent;
+                portfolioButton.classList.add('button-selected');
+                isPortfolio = true;
+            }
+        }
+
+        function button3Pressed() {
+            var contentDiv = document.querySelector('.content');
+            var nftsButton = document.querySelector('.custom-button[style="top: 80%;"]');
+            if (isNFTs) {
+                contentDiv.innerHTML = defaultContent;
+                nftsButton.classList.remove('button-selected');
+                isNFTs = false;
+            } else {
+                contentDiv.innerHTML = nftsContent;
+                nftsButton.classList.add('button-selected');
+                isNFTs = true;
+            }
+        }
+
+        function deleteBid(address) {
+            fetch('http://localhost:3000/deleteBid', {
+                method: 'DELETE',
+                headers: {
+                'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ address }),
+            })
+            .then(response => response.text())
+            .then(data => console.log(data))
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        }
+
+        
+    </script>
+</body>
+</html>

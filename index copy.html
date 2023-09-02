@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crypto Social Game</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/web3@1.3.0/dist/web3.min.js"></script>
+    <style>
+        body {
+            background-image: url("background1.jpg");
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            font-family: 'Permanent Marker', cursive;
+        }
+        .btn-primary {
+            background-color: #ff4081;
+            border-color: #ff4081;
+            width: 20%;
+        }
+        .header h1 {
+            text-align: center;
+            position: absolute;
+            left: 45%;
+        }
+
+        .header {
+            text-align: right;
+            padding: 1%;
+            border-bottom: 2px solid #f5f5dc;
+            background-color: black;
+            color: white;
+        }
+
+        
+        .content {
+            padding: 5%;
+            font-size: 1.2em;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <h1>Tattoo Game</h1>
+        <button id="connectButton" class="btn btn-primary">Connect Wallet</button>
+    </header>
+    <div class="content">
+        <h1>Welcome to our Crypto Social Game!</h1>
+        <p>This is a unique platform where users can bid to have custom art commissioned and tattooed onto willing participants. Connect your wallet to get started.</p>
+    </div>
+    <script>
+        document.getElementById('connectButton').addEventListener('click', async () => {
+            if (window.ethereum) {
+                window.web3 = new Web3(ethereum);
+                try {
+                    await ethereum.enable();
+                    var accounts = await web3.eth.getAccounts();
+                    document.getElementById('connectButton').innerText = accounts[0].substring(0, 7);
+                } catch (error) {
+                    console.error(error);
+                }
+            } else if (window.web3) {
+                window.web3 = new Web3(web3.currentProvider);
+            } else {
+                console.log('Non-Ethereum browser detected. You should consider trying MetaMask!');
+            }
+        });
+    </script>
+</body>
+</html>
